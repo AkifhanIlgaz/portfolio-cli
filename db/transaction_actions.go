@@ -18,18 +18,18 @@ var txBucket = []byte("transactions")
 	AllTransactionForSameType ?
 */
 
-type txType int
+type TxType int
 
 const (
-	buy = iota
-	sell
+	Buy TxType = iota
+	Sell
 )
 
 // Key will be sequential ID
 type Transaction struct {
 	Name   string
 	Date   time.Time
-	Type   txType
+	Type   TxType
 	Amount float64
 	Price  float64
 }
@@ -64,22 +64,15 @@ func AllTransactionsOfAsset(asset string) []Transaction {
 }
 
 // Interactive ( Ask user what is the asset,price etc.)
-func CreateTransaction(tx Transaction) error {
+func CreateTransaction(newTx Transaction) error {
 	// Return transaction ID
-	mockTx := Transaction{
-		Name:   "Sui",
-		Date:   time.Now(),
-		Type:   sell,
-		Amount: 1500,
-		Price:  1.30,
-	}
 
 	err := db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket(txBucket)
 		id64, _ := b.NextSequence()
 		id := int(id64)
 		key := itob(id)
-		return b.Put(key, Serialize(mockTx))
+		return b.Put(key, Serialize(newTx))
 	})
 
 	if err != nil {
