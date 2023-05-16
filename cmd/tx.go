@@ -9,7 +9,6 @@ import (
 var txCmd = &cobra.Command{
 	Use:   "tx",
 	Short: "Show all transactions",
-
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("tx called")
 	},
