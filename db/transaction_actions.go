@@ -1,6 +1,11 @@
 package db
 
-import "time"
+import (
+	"encoding/binary"
+	"time"
+
+	"github.com/boltdb/bolt"
+)
 
 var txBucket = []byte("transactions")
 
@@ -23,14 +28,35 @@ const (
 // Key will be sequential ID
 type Transaction struct {
 	Name   string
-	Date   time.Time `json:"date"`
-	Type   txType    `json:"type"`
+	Date   time.Time
+	Type   txType
 	Amount float64
 	Price  float64
 }
 
-func AllTransactions() []Transaction {
-	panic("Return all transactions")
+func AllTransactions() ([]Transaction, error) {
+	transactions := []Transaction{}
+
+	err := db.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket(txBucket)
+
+		c := b.Cursor()
+
+		for k, v := c.First(); k != nil; k, v = c.Next() {
+			transaction := Deserialize[Transaction](v)
+
+			transactions = append(transactions, transaction)
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return transactions, nil
+
 }
 
 func AllTransactionsOfAsset(asset string) []Transaction {
@@ -39,7 +65,29 @@ func AllTransactionsOfAsset(asset string) []Transaction {
 
 // Interactive ( Ask user what is the asset,price etc.)
 func CreateTransaction(tx Transaction) error {
-	panic("Create new transaction")
+	// Return transaction ID
+	mockTx := Transaction{
+		Name:   "Sui",
+		Date:   time.Now(),
+		Type:   sell,
+		Amount: 1500,
+		Price:  1.30,
+	}
+
+	err := db.Update(func(tx *bolt.Tx) error {
+		b := tx.Bucket(txBucket)
+		id64, _ := b.NextSequence()
+		id := int(id64)
+		key := itob(id)
+		return b.Put(key, Serialize(mockTx))
+	})
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+
 }
 
 // Interactive
@@ -53,4 +101,10 @@ func DeleteTransaction(id int) error {
 
 func GetTransaction(id int) (Transaction, error) {
 	panic("Return transaction by id")
+}
+
+func itob(v int) []byte {
+	b := make([]byte, 8)
+	binary.BigEndian.PutUint64(b, uint64(v))
+	return b
 }

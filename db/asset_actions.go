@@ -21,7 +21,7 @@ const (
 type Asset struct {
 	Balance  float64
 	AvgPrice float64
-	Type     string
+	Type     AssetType
 }
 
 func AllAssets() []Asset {

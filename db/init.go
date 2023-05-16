@@ -1,6 +1,7 @@
 package db
 
 import (
+	"encoding/json"
 	"time"
 
 	"github.com/boltdb/bolt"
@@ -33,4 +34,17 @@ func Init(dbPath string) error {
 	}
 
 	return nil
+}
+
+func Serialize[T Transaction | Asset](data T) []byte {
+	serialized, _ := json.Marshal(data)
+	return serialized
+}
+
+func Deserialize[T Transaction | Asset](data []byte) T {
+	var t T
+
+	json.Unmarshal(data, &t)
+
+	return t
 }

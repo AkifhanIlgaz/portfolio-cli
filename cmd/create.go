@@ -1,8 +1,7 @@
 package cmd
 
 import (
-	"fmt"
-
+	"github.com/AkifhanIlgaz/portfolio-cli/db"
 	"github.com/spf13/cobra"
 )
 
@@ -10,7 +9,7 @@ var createCmd = &cobra.Command{
 	Use:   "create",
 	Short: "Create a new transaction",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("create called")
+		db.CreateTransaction(db.Transaction{})
 	},
 }
 
