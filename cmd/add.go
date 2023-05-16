@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/AkifhanIlgaz/portfolio-cli/db"
@@ -40,10 +41,9 @@ func getTxInformationFromUser() db.Transaction {
 func getAssetName() string {
 	fmt.Print("> Asset Name: ")
 	scanner.Scan()
-	return scanner.Text()
+	return strings.ToTitle(scanner.Text())
 }
 
-// Date type amount price
 func getType() db.TxType {
 	var txType db.TxType
 

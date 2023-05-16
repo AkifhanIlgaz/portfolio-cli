@@ -1,21 +1,39 @@
 package main
 
 import (
-	"fmt"
+	"path/filepath"
 
 	"github.com/AkifhanIlgaz/portfolio-cli/db"
+	"github.com/mitchellh/go-homedir"
 )
 
 func main() {
 
-	asset := db.Asset{
-		Type:     db.Crypto,
-		Balance:  100,
-		AvgPrice: 1,
+	home, _ := homedir.Dir()
+	dbPath := filepath.Join(home, "portfolio.db")
+	db.Init(dbPath)
+
+	// oldTx := db.Transaction{
+	// 	Name:   "Mumu",
+	// 	Amount: 15,
+	// 	Price:  1,
+	// }
+
+	// db.CreateTransaction(oldTx)
+
+	// db.AllTransactions()
+
+	db.GetTransaction(13)
+
+	newTx := db.Transaction{
+		Name:   "Bloktopia",
+		Amount: 13,
+		Price:  1,
 	}
 
-	x := db.Serialize(asset)
-	fmt.Println(x)
+	db.EditTransaction(13, newTx)
 
-	fmt.Println(db.Deserialize[db.Asset](x))
+	db.GetTransaction(13)
+
+	db.AllTransactions()
 }

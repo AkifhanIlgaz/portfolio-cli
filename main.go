@@ -1,8 +1,7 @@
 package main
 
 import (
-	"fmt"
-	"os"
+	"log"
 	"path/filepath"
 
 	"github.com/AkifhanIlgaz/portfolio-cli/cmd"
@@ -13,14 +12,10 @@ import (
 func main() {
 	home, _ := homedir.Dir()
 	dbPath := filepath.Join(home, "portfolio.db")
-	must(db.Init(dbPath))
+	err := db.Init(dbPath)
+	if err != nil {
+		log.Fatal("Unable to connect BoltDB")
+	}
 
 	cmd.Execute()
-}
-
-func must(err error) {
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
 }

@@ -2,6 +2,7 @@ package db
 
 import (
 	"encoding/binary"
+	"fmt"
 	"time"
 
 	"github.com/boltdb/bolt"
@@ -44,7 +45,8 @@ func AllTransactions() ([]Transaction, error) {
 
 		for k, v := c.First(); k != nil; k, v = c.Next() {
 			transaction := Deserialize[Transaction](v)
-
+			fmt.Println(k)
+			fmt.Println(transaction)
 			transactions = append(transactions, transaction)
 		}
 
@@ -63,16 +65,29 @@ func AllTransactionsOfAsset(asset string) []Transaction {
 	panic("Return all transactions of specified asset")
 }
 
-// Interactive ( Ask user what is the asset,price etc.)
-func CreateTransaction(newTx Transaction) error {
-	// Return transaction ID
+func CreateTransaction(newTx Transaction) (int, error) {
+	var id int
 
 	err := db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket(txBucket)
 		id64, _ := b.NextSequence()
-		id := int(id64)
+		id = int(id64)
 		key := itob(id)
 		return b.Put(key, Serialize(newTx))
+	})
+
+	if err != nil {
+		return -1, err
+	}
+
+	return id, nil
+}
+
+func EditTransaction(id int, newTx Transaction) error {
+	// newTx must be same asset as oldTx. If it's not, don't edit
+	err := db.Update(func(tx *bolt.Tx) error {
+		b := tx.Bucket(txBucket)
+		return b.Put(itob(id), Serialize(newTx))
 	})
 
 	if err != nil {
@@ -80,12 +95,6 @@ func CreateTransaction(newTx Transaction) error {
 	}
 
 	return nil
-
-}
-
-// Interactive
-func EditTransaction(id int) error {
-	panic("Edit existing transaction. Error if tx doesn't exist")
 }
 
 func DeleteTransaction(id int) error {
@@ -93,7 +102,24 @@ func DeleteTransaction(id int) error {
 }
 
 func GetTransaction(id int) (Transaction, error) {
-	panic("Return transaction by id")
+	var myTx Transaction
+
+	err := db.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket(txBucket)
+
+		if rawTx := b.Get(itob(id)); rawTx != nil {
+			myTx = Deserialize[Transaction](rawTx)
+			return nil
+		} else {
+			return fmt.Errorf("Cannot found transaction: %v", id)
+		}
+	})
+
+	if err != nil {
+		return Transaction{}, err
+	}
+
+	return myTx, nil
 }
 
 func itob(v int) []byte {
