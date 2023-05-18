@@ -15,10 +15,8 @@ var txCmd = &cobra.Command{
 		// TODO: Validate asset name ?
 
 		if len(args) == 0 {
-			if txs, err := db.AllTransactions(); err == nil {
-				for _, tx := range txs {
-					fmt.Println(tx)
-				}
+			for _, tx := range db.AllTransactions() {
+				fmt.Println(tx)
 			}
 			return
 		}

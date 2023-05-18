@@ -10,15 +10,6 @@ import (
 
 var txBucket = []byte("transactions")
 
-/*
-	Create  Interactive
-	Delete
-	Edit	Interactive
-	Get
-	All
-	AllTransactionForSameType ?
-*/
-
 type TxType int
 
 const (
@@ -35,10 +26,10 @@ type Transaction struct {
 	Price  float64
 }
 
-func AllTransactions() ([]Transaction, error) {
+func AllTransactions() []Transaction {
 	transactions := []Transaction{}
 
-	err := db.View(func(tx *bolt.Tx) error {
+	db.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket(txBucket)
 
 		c := b.Cursor()
@@ -51,11 +42,7 @@ func AllTransactions() ([]Transaction, error) {
 		return nil
 	})
 
-	if err != nil {
-		return nil, err
-	}
-
-	return transactions, nil
+	return transactions
 
 }
 
@@ -154,16 +141,12 @@ func GetTransaction(id int) (Transaction, error) {
 		if rawTx := b.Get(itob(id)); rawTx != nil {
 			myTx = Deserialize[Transaction](rawTx)
 			return nil
-		} else {
-			return fmt.Errorf("Cannot found transaction: %v", id)
 		}
+
+		return fmt.Errorf("cannot found transaction: %v", id)
 	})
 
-	if err != nil {
-		return Transaction{}, err
-	}
-
-	return myTx, nil
+	return myTx, err
 }
 
 func itob(v int) []byte {
