@@ -45,8 +45,6 @@ func AllTransactions() ([]Transaction, error) {
 
 		for k, v := c.First(); k != nil; k, v = c.Next() {
 			transaction := Deserialize[Transaction](v)
-			fmt.Println(k)
-			fmt.Println(transaction)
 			transactions = append(transactions, transaction)
 		}
 
@@ -62,7 +60,23 @@ func AllTransactions() ([]Transaction, error) {
 }
 
 func AllTransactionsOfAsset(asset string) []Transaction {
-	panic("Return all transactions of specified asset")
+	var transactions []Transaction
+
+	db.Update(func(tx *bolt.Tx) error {
+		b := tx.Bucket(txBucket)
+		c := b.Cursor()
+
+		for k, v := c.First(); k != nil; k, v = c.Next() {
+			tx := Deserialize[Transaction](v)
+			if tx.Name == asset {
+				transactions = append(transactions, tx)
+			}
+		}
+		return nil
+	})
+
+	return transactions
+
 }
 
 func CreateTransaction(newTx Transaction) (int, error) {
@@ -98,7 +112,17 @@ func EditTransaction(id int, newTx Transaction) error {
 }
 
 func DeleteTransaction(id int) error {
-	panic("Delete the transaction")
+	err := db.Update(func(tx *bolt.Tx) error {
+		b := tx.Bucket(txBucket)
+		_, err := GetTransaction(id)
+		if err != nil {
+			return fmt.Errorf("tx #%v doesn't exist", id)
+		}
+
+		return b.Delete(itob(id))
+	})
+
+	return err
 }
 
 func GetTransaction(id int) (Transaction, error) {
