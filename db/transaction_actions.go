@@ -15,6 +15,7 @@ type TxType int
 const (
 	Buy TxType = iota
 	Sell
+	InvalidTxType
 )
 
 // Key will be sequential ID
@@ -105,7 +106,6 @@ func CreateTransaction(newTx Transaction) (int, error) {
 }
 
 func EditTransaction(id int, newTx Transaction) error {
-	// newTx must be same asset as oldTx. If it's not, don't edit
 	err := db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket(txBucket)
 		return b.Put(itob(id), Serialize(newTx))

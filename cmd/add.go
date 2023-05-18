@@ -41,7 +41,13 @@ func getTxInformationFromUser() db.Transaction {
 func getAssetName() string {
 	fmt.Print("> Asset Name: ")
 	scanner.Scan()
-	return strings.ToTitle(scanner.Text())
+
+	asset := scanner.Text()
+	return toTitle(asset)
+}
+
+func toTitle(data string) string {
+	return strings.ToUpper(data[:1]) + data[1:]
 }
 
 func getType() db.TxType {
@@ -54,6 +60,8 @@ func getType() db.TxType {
 		txType = db.Sell
 	case "buy":
 		txType = db.Buy
+	default:
+		txType = db.InvalidTxType
 	}
 
 	return txType
@@ -86,9 +94,13 @@ func getDate() time.Time {
 	scanner.Scan()
 	if date := scanner.Text(); date == "" {
 		return time.Now()
+	} else {
+		newDate, err := time.Parse("", date)
+		if err != nil {
+			fmt.Println(err)
+			return time.Time{}
+		}
+		return newDate
 	}
 
-	// Parse given time || DD-MM-YYYY
-
-	return time.Now()
 }
