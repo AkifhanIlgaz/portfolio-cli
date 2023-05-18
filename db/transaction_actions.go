@@ -62,7 +62,7 @@ func AllTransactions() ([]Transaction, error) {
 func AllTransactionsOfAsset(asset string) []Transaction {
 	var transactions []Transaction
 
-	db.Update(func(tx *bolt.Tx) error {
+	db.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket(txBucket)
 		c := b.Cursor()
 
@@ -77,6 +77,26 @@ func AllTransactionsOfAsset(asset string) []Transaction {
 
 	return transactions
 
+}
+
+func GetAllTransactionsOfType(txType TxType) []Transaction {
+	var transactions []Transaction
+
+	db.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket(txBucket)
+		c := b.Cursor()
+
+		for k, v := c.First(); k != nil; k, v = c.Next() {
+			tx := Deserialize[Transaction](v)
+			if tx.Type == txType {
+				transactions = append(transactions, tx)
+			}
+		}
+
+		return nil
+	})
+
+	return transactions
 }
 
 func CreateTransaction(newTx Transaction) (int, error) {

@@ -13,27 +13,4 @@ func main() {
 	dbPath := filepath.Join(home, "portfolio.db")
 	db.Init(dbPath)
 
-	// oldTx := db.Transaction{
-	// 	Name:   "Mumu",
-	// 	Amount: 15,
-	// 	Price:  1,
-	// }
-
-	// db.CreateTransaction(oldTx)
-
-	// db.AllTransactions()
-
-	db.GetTransaction(13)
-
-	newTx := db.Transaction{
-		Name:   "Bloktopia",
-		Amount: 13,
-		Price:  1,
-	}
-
-	db.EditTransaction(13, newTx)
-
-	db.GetTransaction(13)
-
-	db.AllTransactions()
 }
