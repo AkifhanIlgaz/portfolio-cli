@@ -38,8 +38,6 @@ func getTxInformationFromUser() db.Transaction {
 	}
 }
 
-// MUST ?
-
 func getAsset() string {
 	fmt.Print("> Asset: ")
 	scanner.Scan()
@@ -49,11 +47,11 @@ func getAsset() string {
 		fmt.Println("Please enter an asset")
 		os.Exit(1)
 	}
-	return toTitle(asset)
+	return strings.ToLower(asset)
 }
 
 func toTitle(data string) string {
-	return strings.ToUpper(data[:1]) + data[1:]
+	return strings.ToUpper(data[:1]) + strings.ToLower(data[1:])
 }
 
 func getType() string {
@@ -61,10 +59,13 @@ func getType() string {
 
 	fmt.Print("> Transaction Type: ")
 	scanner.Scan()
-	t := scanner.Text()
+	t := strings.ToLower(scanner.Text())
 	switch t {
-	case "sell", "buy":
+	case "sell", "buy", "airdrop":
 		txType = t
+	default:
+		fmt.Println("Invalid transaction type")
+		os.Exit(1)
 	}
 
 	return txType
@@ -98,12 +99,12 @@ func getDate() time.Time {
 	if date := scanner.Text(); date == "" {
 		return time.Now()
 	} else {
-		newDate, err := time.Parse("", date)
+		date, err := time.Parse("02-01-2006 15:04", date)
 		if err != nil {
 			fmt.Println(err)
 			return time.Time{}
 		}
-		return newDate
+		return date
 	}
 
 }
