@@ -2,13 +2,13 @@
 
 ## Transaction Actions
 
-Create a transaction
-Delete a transaction
-Edit a transaction
-Get a transaction
-Get all transactions
-Get all transactions of an asset
-Get all transactions of same type
+✔️ Create a transaction
+✔️ Delete a transaction
+✔️ Edit a transaction
+✔️ Get a transaction
+✔️ Get all transactions
+✔️ Get all transactions of an asset
+✔️ Get all transactions of same type
 
 ## Asset Actions
 
@@ -24,15 +24,15 @@ Example => portfolio-cli balance -c try
 
 ## Tx Actions
 
-tx <asset1>, <asset2> => Return all transactions. If asset names are given by additional arguments just return transactions for given assets
+✔️ tx <asset1>, <asset2> => Return all transactions. If asset names are given by additional arguments just return transactions for given assets
 
-tx get <id>, <id2> => Return transactions for given IDs
+✔️ tx get <id>, <id2> => Return transactions for given IDs
 
-tx edit <id> => Edit #id in an interactive way. Asset name must remain the same
+✔️ tx edit <id> => Edit #id in an interactive way. Asset name must remain the same
 
-tx delete <id>, <id2> => Delete transactions for IDs
+✔️ tx delete <id>, <id2> => Delete transactions for IDs
 
-tx add => Create new transaction in interactive way
+✔️ tx add => Create new transaction in interactive way
 
 ## Asset Actions
 
