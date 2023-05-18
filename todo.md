@@ -14,7 +14,6 @@
 
 Get all assets
 Get all crypto assets
-Get all stocks
 Delete an asset
 
 # COBRA ACTIONS
@@ -28,7 +27,7 @@ Example => portfolio-cli balance -c try
 
 ✔️ tx get <id>, <id2> => Return transactions for given IDs
 
-tx edit <id> => Edit #id in an interactive way
+✔️ tx edit <id> => Edit #id in an interactive way
 
 ✔️ tx delete <id>, <id2> => Delete transactions for IDs
 

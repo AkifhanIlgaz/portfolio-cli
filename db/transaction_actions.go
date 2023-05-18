@@ -10,19 +10,11 @@ import (
 
 var txBucket = []byte("transactions")
 
-type TxType int
-
-const (
-	Buy TxType = iota
-	Sell
-	InvalidTxType
-)
-
 // Key will be sequential ID
 type Transaction struct {
 	Asset  string
 	Date   time.Time
-	Type   TxType
+	Type   string // Create type for txType
 	Amount float64
 	Price  float64
 }
@@ -67,7 +59,7 @@ func AllTransactionsOfAsset(asset string) []Transaction {
 
 }
 
-func GetAllTransactionsOfType(txType TxType) []Transaction {
+func GetAllTransactionsOfType(txType string) []Transaction {
 	var transactions []Transaction
 
 	db.View(func(tx *bolt.Tx) error {

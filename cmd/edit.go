@@ -55,20 +55,15 @@ func changeAsset(oldAsset string) string {
 	return toTitle(asset)
 }
 
-func changeType(oldType db.TxType) db.TxType {
-	var txType = oldType
+func changeType(oldType string) string {
 
 	fmt.Print("> Transaction Type: ")
 	scanner.Scan()
-	switch scanner.Text() {
-	case "sell":
-		txType = db.Sell
-	case "buy":
-		txType = db.Buy
-
+	if t := scanner.Text(); t != "" {
+		return t
 	}
 
-	return txType
+	return oldType
 }
 
 func changeAmount(oldAmount float64) float64 {

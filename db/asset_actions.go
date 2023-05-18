@@ -4,27 +4,20 @@ import "github.com/boltdb/bolt"
 
 var assetBucket = []byte("assets")
 
-/*
-	AllAssets
-	Crypto
-	Stock
-	Delete
-*/
-
-type AssetType int
-
-const (
-	crypto = iota
-	stock
-	fiat
-)
-
 // Name will be key in DB
 type Asset struct {
 	Name        string
 	Balance     float64
 	AvgBuyPrice float64
-	Type        AssetType
+	Type        string
+}
+
+func (a Asset) IsFiat() bool {
+	switch a.Type {
+	case "TRY", "BUSD", "USDT", "USDC", "DAI":
+		return true
+	}
+	return false
 }
 
 func AllAssets() []Asset {
@@ -42,7 +35,7 @@ func AllCryptoAssets() []Asset {
 
 		for k, v := c.First(); k != nil; k, v = c.Next() {
 			asset := Deserialize[Asset](v)
-			if asset.Type == crypto {
+			if !asset.IsFiat() {
 				assets = append(assets, asset)
 			}
 		}
@@ -62,7 +55,7 @@ func AllFiatAssets() []Asset {
 
 		for k, v := c.First(); k != nil; k, v = c.Next() {
 			asset := Deserialize[Asset](v)
-			if asset.Type == fiat {
+			if asset.IsFiat() {
 				assets = append(assets, asset)
 			}
 		}

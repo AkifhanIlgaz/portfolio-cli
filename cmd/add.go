@@ -56,18 +56,15 @@ func toTitle(data string) string {
 	return strings.ToUpper(data[:1]) + data[1:]
 }
 
-func getType() db.TxType {
-	var txType db.TxType
+func getType() string {
+	var txType string
 
 	fmt.Print("> Transaction Type: ")
 	scanner.Scan()
-	switch scanner.Text() {
-	case "sell":
-		txType = db.Sell
-	case "buy":
-		txType = db.Buy
-	default:
-		txType = db.InvalidTxType
+	t := scanner.Text()
+	switch t {
+	case "sell", "buy":
+		txType = t
 	}
 
 	return txType
