@@ -1,4 +1,4 @@
-module github.com/AkifhanIlgaz/portfolio-cli
+module github.com/AkifhanIlgaz/portfolio
 
 go 1.20
 

@@ -3,7 +3,7 @@ package main
 import (
 	"path/filepath"
 
-	"github.com/AkifhanIlgaz/portfolio-cli/db"
+	"github.com/AkifhanIlgaz/portfolio/db"
 	"github.com/mitchellh/go-homedir"
 )
 

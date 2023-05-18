@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/AkifhanIlgaz/portfolio-cli/db"
+	"github.com/AkifhanIlgaz/portfolio/db"
 	"github.com/spf13/cobra"
 )
 
