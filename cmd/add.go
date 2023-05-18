@@ -30,7 +30,7 @@ func init() {
 
 func getTxInformationFromUser() db.Transaction {
 	return db.Transaction{
-		Name:   getAssetName(),
+		Asset:  getAsset(),
 		Date:   getDate(),
 		Type:   getType(),
 		Amount: getAmount(),
@@ -38,11 +38,17 @@ func getTxInformationFromUser() db.Transaction {
 	}
 }
 
-func getAssetName() string {
-	fmt.Print("> Asset Name: ")
+// MUST ?
+
+func getAsset() string {
+	fmt.Print("> Asset: ")
 	scanner.Scan()
 
 	asset := scanner.Text()
+	if asset == "" {
+		fmt.Println("Please enter an asset")
+		os.Exit(1)
+	}
 	return toTitle(asset)
 }
 

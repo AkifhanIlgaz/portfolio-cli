@@ -32,7 +32,7 @@ var editCmd = &cobra.Command{
 		// print old transaction as row. So user can see old values
 		fmt.Println(oldTx)
 
-		oldTx.Name = changeAssetName(oldTx.Name)
+		oldTx.Asset = changeAsset(oldTx.Asset)
 		oldTx.Date = changeDate(oldTx.Date)
 		oldTx.Type = changeType(oldTx.Type)
 		oldTx.Amount = changeAmount(oldTx.Amount)
@@ -43,13 +43,13 @@ var editCmd = &cobra.Command{
 	},
 }
 
-func changeAssetName(oldName string) string {
+func changeAsset(oldAsset string) string {
 	fmt.Print("> Asset Name: ")
 	scanner.Scan()
 
 	asset := scanner.Text()
 	if asset == "" {
-		return oldName
+		return oldAsset
 	}
 
 	return toTitle(asset)

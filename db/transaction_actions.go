@@ -20,7 +20,7 @@ const (
 
 // Key will be sequential ID
 type Transaction struct {
-	Name   string
+	Asset  string
 	Date   time.Time
 	Type   TxType
 	Amount float64
@@ -56,7 +56,7 @@ func AllTransactionsOfAsset(asset string) []Transaction {
 
 		for k, v := c.First(); k != nil; k, v = c.Next() {
 			tx := Deserialize[Transaction](v)
-			if tx.Name == asset {
+			if tx.Asset == asset {
 				transactions = append(transactions, tx)
 			}
 		}
@@ -106,16 +106,10 @@ func CreateTransaction(newTx Transaction) (int, error) {
 }
 
 func EditTransaction(id int, newTx Transaction) error {
-	err := db.Update(func(tx *bolt.Tx) error {
+	return db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket(txBucket)
 		return b.Put(itob(id), Serialize(newTx))
 	})
-
-	if err != nil {
-		return err
-	}
-
-	return nil
 }
 
 func DeleteTransaction(id int) error {
