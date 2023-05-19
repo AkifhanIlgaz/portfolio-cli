@@ -45,8 +45,8 @@ asset delete <asset>, <asset1> => Delete given assets
 
 ## Crypto
 
-Get price data by scraping(?) CoinMarketCap page
+✔️ Get price via Coingecko API
 
 ## TRY-USD Converter
 
-Convert TRY-USD
+✔️ Convert TRY-USD
