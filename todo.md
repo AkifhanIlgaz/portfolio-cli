@@ -12,9 +12,11 @@
 
 ## Asset Actions
 
-Get all assets
-Get all crypto assets
-Delete an asset
+✔️ Get all assets
+✔️ Get all crypto assets
+✔️ Get all fiat assets
+✔️ Delete an asset
+✔️ Update an asset
 
 # COBRA ACTIONS
 
@@ -37,5 +39,14 @@ Example => portfolio-cli balance -c try
 
 asset => Return all assets
 asset crypto => Return all cryptocurrencies
-asset stock => Return all stocks
 asset delete <asset>, <asset1> => Delete given assets
+
+# PRICE
+
+## Crypto
+
+Get price data by scraping(?) CoinMarketCap page
+
+## TRY-USD Converter
+
+Convert TRY-USD
