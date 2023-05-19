@@ -13,7 +13,7 @@ type Asset struct {
 
 func (a Asset) isFiat() bool {
 	switch a.Name {
-	case "TRY", "BUSD", "USDT", "USDC", "DAI":
+	case "try", "busd", "usdt", "usdc", "dai":
 		return true
 	}
 	return false
