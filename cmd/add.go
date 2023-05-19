@@ -48,7 +48,12 @@ func getAsset() string {
 		fmt.Println("Please enter an asset")
 		os.Exit(1)
 	}
-	return strings.TrimSpace(strings.ToLower(asset))
+
+	asset = strings.TrimSpace(asset)
+	asset = strings.Join(strings.Fields(asset), "-")
+	asset = strings.ToLower(asset)
+
+	return asset
 }
 
 func toTitle(data string) string {

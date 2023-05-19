@@ -1,16 +1,18 @@
 package main
 
 import (
-	"path/filepath"
+	"fmt"
 
-	"github.com/AkifhanIlgaz/portfolio/db"
-	"github.com/mitchellh/go-homedir"
+	"github.com/AkifhanIlgaz/portfolio/price"
 )
 
 func main() {
 
-	home, _ := homedir.Dir()
-	dbPath := filepath.Join(home, "portfolio.db")
-	db.Init(dbPath)
+	// home, _ := homedir.Dir()
+	// dbPath := filepath.Join(home, "portfolio.db")
+	// db.Init(dbPath)
 
+	fmt.Println(price.Crypto("bitcoin", "ethereum", "    stafi", "Pegaxy Stone"))
+
+	fmt.Println(price.TRY())
 }
