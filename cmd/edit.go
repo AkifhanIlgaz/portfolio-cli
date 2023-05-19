@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/AkifhanIlgaz/portfolio/db"
@@ -53,14 +54,14 @@ func changeAsset(oldAsset string) string {
 		return oldAsset
 	}
 
-	return toTitle(asset)
+	return strings.TrimSpace(strings.ToLower(asset))
 }
 
 func changeType(oldType string) string {
 
 	fmt.Print("> Transaction Type: ")
 	scanner.Scan()
-	if t := scanner.Text(); t != "" {
+	if t := strings.TrimSpace(scanner.Text()); t != "" {
 		return t
 	}
 
@@ -71,7 +72,7 @@ func changeAmount(oldAmount float64) float64 {
 	fmt.Print("> Amount: ")
 	scanner.Scan()
 
-	if amount := scanner.Text(); amount == "" {
+	if amount := strings.TrimSpace(scanner.Text()); amount == "" {
 		return oldAmount
 	} else {
 		amount, err := strconv.ParseFloat(amount, 64)
@@ -87,7 +88,7 @@ func changePrice(oldPrice float64) float64 {
 	fmt.Print("> Price: ")
 	scanner.Scan()
 
-	if price := scanner.Text(); price == "" {
+	if price := strings.TrimSpace(scanner.Text()); price == "" {
 		return oldPrice
 	} else {
 		price, err := strconv.ParseFloat(price, 64)
@@ -102,7 +103,7 @@ func changePrice(oldPrice float64) float64 {
 func changeDate(oldDate time.Time) time.Time {
 	fmt.Print("> Date: ")
 	scanner.Scan()
-	if date := scanner.Text(); date == "" {
+	if date := strings.TrimSpace(scanner.Text()); date == "" {
 		return oldDate
 	} else {
 		newDate, err := time.Parse("01-02-2006", date)

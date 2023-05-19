@@ -52,7 +52,7 @@ func getAsset() string {
 }
 
 func toTitle(data string) string {
-	return strings.ToUpper(data[:1]) + strings.ToLower(data[1:])
+	return strings.TrimSpace(strings.ToUpper(data[:1]) + strings.ToLower(data[1:]))
 }
 
 func getType() string {
@@ -75,7 +75,7 @@ func getType() string {
 func getAmount() float64 {
 	fmt.Print("> Amount: ")
 	scanner.Scan()
-	amount, err := strconv.ParseFloat(scanner.Text(), 64)
+	amount, err := strconv.ParseFloat(strings.TrimSpace(scanner.Text()), 64)
 	if err != nil {
 		log.Fatal("Unable to parse amount. Please enter valid amount")
 	}
@@ -86,7 +86,7 @@ func getAmount() float64 {
 func getPrice() float64 {
 	fmt.Print("> Price: ")
 	scanner.Scan()
-	amount, err := strconv.ParseFloat(scanner.Text(), 64)
+	amount, err := strconv.ParseFloat(strings.TrimSpace(scanner.Text()), 64)
 	if err != nil {
 		log.Fatal("Unable to parse amount. Please enter valid price")
 	}
@@ -97,7 +97,7 @@ func getPrice() float64 {
 func getDate() time.Time {
 	fmt.Print("> Date: ")
 	scanner.Scan()
-	if date := scanner.Text(); date == "" {
+	if date := strings.TrimSpace(scanner.Text()); date == "" {
 		return time.Now()
 	} else {
 		date, err := time.Parse("02-01-2006 15:04", date)
