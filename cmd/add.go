@@ -19,6 +19,7 @@ var createCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		tx := getTxInformationFromUser()
 		db.CreateTransaction(tx)
+		db.UpdateAsset(tx.Asset)
 	},
 }
 
@@ -47,7 +48,7 @@ func getAsset() string {
 		fmt.Println("Please enter an asset")
 		os.Exit(1)
 	}
-	return strings.ToLower(asset)
+	return strings.TrimSpace(strings.ToLower(asset))
 }
 
 func toTitle(data string) string {
@@ -59,7 +60,7 @@ func getType() string {
 
 	fmt.Print("> Transaction Type: ")
 	scanner.Scan()
-	t := strings.ToLower(scanner.Text())
+	t := strings.TrimSpace(strings.ToLower(scanner.Text()))
 	switch t {
 	case "sell", "buy", "airdrop":
 		txType = t

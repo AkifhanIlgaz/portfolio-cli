@@ -9,11 +9,10 @@ type Asset struct {
 	Name        string
 	Balance     float64
 	AvgBuyPrice float64
-	Type        string
 }
 
-func (a Asset) IsFiat() bool {
-	switch a.Type {
+func (a Asset) isFiat() bool {
+	switch a.Name {
 	case "TRY", "BUSD", "USDT", "USDC", "DAI":
 		return true
 	}
@@ -21,12 +20,6 @@ func (a Asset) IsFiat() bool {
 }
 
 func AllAssets() []Asset {
-	panic("Return all assets that user has")
-}
-
-// Filter
-
-func AllCryptoAssets() []Asset {
 	var assets []Asset
 
 	db.View(func(tx *bolt.Tx) error {
@@ -34,46 +27,88 @@ func AllCryptoAssets() []Asset {
 		c := b.Cursor()
 
 		for k, v := c.First(); k != nil; k, v = c.Next() {
-			asset := Deserialize[Asset](v)
-			if !asset.IsFiat() {
-				assets = append(assets, asset)
-			}
+			assets = append(assets, Deserialize[Asset](v))
 		}
 
 		return nil
 	})
 
 	return assets
+
+}
+
+func AllCryptoAssets() []Asset {
+	return filterCrypto(AllAssets())
+}
+
+// Reduce filter functions to one. Anonymous functions ?
+
+func filterCrypto(assets []Asset) []Asset {
+	var filtered []Asset
+
+	for _, asset := range assets {
+		if !asset.isFiat() {
+			filtered = append(filtered, asset)
+		}
+	}
+
+	return filtered
+}
+
+func filterFiat(assets []Asset) []Asset {
+	var filtered []Asset
+
+	for _, asset := range assets {
+		if asset.isFiat() {
+			filtered = append(filtered, asset)
+		}
+	}
+
+	return filtered
 }
 
 func AllFiatAssets() []Asset {
-	var assets []Asset
-
-	db.View(func(tx *bolt.Tx) error {
-		b := tx.Bucket(assetBucket)
-		c := b.Cursor()
-
-		for k, v := c.First(); k != nil; k, v = c.Next() {
-			asset := Deserialize[Asset](v)
-			if asset.IsFiat() {
-				assets = append(assets, asset)
-			}
-		}
-
-		return nil
-	})
-
-	return assets
+	return filterFiat(AllAssets())
 }
 
 func DeleteAsset(asset string) error {
-	panic("Delete given asset. Return error if asset doesn't exist")
+	return db.Update(func(tx *bolt.Tx) error {
+		b := tx.Bucket(assetBucket)
+		return b.Delete([]byte(asset))
+	})
 }
 
 func UpdateAsset(asset string) error {
-	panic(`
-	Filter transactions by the name of given asset 
-	Calculate balance and average buy price
-	Delete if there is no transaction for this asset
-	`)
+
+	transactions := AllTransactionsOfAsset(asset)
+
+	if len(transactions) == 0 {
+		return DeleteAsset(asset)
+	}
+
+	var a = Asset{
+		Name: asset,
+	}
+
+	buyAmount, totalMoneyToBuy := 0., 0.
+
+	for _, transaction := range transactions {
+		if transaction.Type == "buy" {
+			buyAmount += transaction.Amount
+			totalMoneyToBuy += transaction.Price * transaction.Amount
+			a.Balance += transaction.Amount
+		} else if transaction.Type == "airdrop" {
+			a.Balance += transaction.Amount
+		} else {
+			a.Balance -= transaction.Amount
+		}
+	}
+
+	a.AvgBuyPrice = totalMoneyToBuy / buyAmount
+
+	return db.Update(func(tx *bolt.Tx) error {
+		b := tx.Bucket(assetBucket)
+		return b.Put([]byte(asset), Serialize(a))
+	})
+
 }

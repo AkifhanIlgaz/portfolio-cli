@@ -18,13 +18,16 @@ var deleteTxCmd = &cobra.Command{
 				fmt.Printf("cannot delete tx #%v. Invalid id", arg)
 				continue
 			}
+			tx, _ := db.GetTransaction(id)
 			err = db.DeleteTransaction(id)
 			if err != nil {
 				fmt.Println("Cannot delete:", err)
 				return
 			}
 			fmt.Printf("Deleted tx #%v \n", id)
+			db.UpdateAsset(tx.Asset)
 		}
+
 	},
 }
 
