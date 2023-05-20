@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/url"
-	"strings"
 	"time"
 )
 
@@ -14,23 +13,38 @@ var httpClient = http.Client{
 	Timeout: 10 * time.Second,
 }
 
-type PriceData map[string]Price
+type PriceData map[string]map[string]float64
 
-type Price struct {
-	Usd float64
+func (p PriceData) GetPrice() float64 {
+	var price float64
+	/*
+		{
+			"sui":
+				{
+					"usd":1.1284195321
+				}
+		}
+		Since our price API is making request for one currency, iterating through PriceData map gives us the USD price.
+		We can achieve the same goal by taking currency name as argument
+	*/
+	for _, v := range p {
+		price = v["usd"]
+	}
+
+	return price
 }
 
-func Crypto(currencies ...string) PriceData {
-	req := createRequest(currencies...)
+func Crypto(currency string) PriceData {
+	req := createRequest(currency)
 
 	resp, _ := httpClient.Do(req)
 
-	var prices PriceData
+	var price PriceData
 
 	d := json.NewDecoder(resp.Body)
-	d.Decode(&prices)
+	d.Decode(&price)
 
-	return prices
+	return price
 
 }
 
@@ -64,10 +78,10 @@ func TRY() float64 {
 	return (info.TCMBAnlikKurBilgileri[0].ForexSelling).(float64)
 }
 
-func createRequest(currencies ...string) *http.Request {
+func createRequest(currency string) *http.Request {
 
 	q := url.Values{}
-	q.Set("ids", strings.Join(currencies, ","))
+	q.Set("ids", currency)
 	q.Set("vs_currencies", "usd")
 	q.Set("precision", "10")
 
