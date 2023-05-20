@@ -1,23 +1,17 @@
+/*
+Copyright © 2023 NAME HERE <EMAIL ADDRESS>
+*/
 package cmd
 
 import (
-	"fmt"
-
-	"github.com/AkifhanIlgaz/portfolio/db"
 	"github.com/spf13/cobra"
 )
 
+// assetCmd represents the asset command
 var assetCmd = &cobra.Command{
-	Use:   "asset",
-	Short: "Show all assets",
-	Run: func(cmd *cobra.Command, args []string) {
-		for _, asset := range db.AllAssets() {
-			fmt.Println(asset)
-		}
-	},
+	Use: "asset",
 }
 
 func init() {
 	rootCmd.AddCommand(assetCmd)
-
 }

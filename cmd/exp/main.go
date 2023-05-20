@@ -12,7 +12,5 @@ func main() {
 	// dbPath := filepath.Join(home, "portfolio.db")
 	// db.Init(dbPath)
 
-	fmt.Println(price.Crypto("bitcoin", "ethereum", "stafi", "pegaxy-stone"))
-
 	fmt.Println(price.TRY())
 }
