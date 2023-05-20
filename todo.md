@@ -1,3 +1,9 @@
+## TODO
+
+Create price command to to get price from CLI
+Create getPriceBatch(?) function for multiple currencies
+Add flags to commands
+
 # DATABASE ACTIONS
 
 Create bucket for old transactions. If the user deletes the asset or sells them all, delete asset's transactions from txBucket and move old oldTxBucket
