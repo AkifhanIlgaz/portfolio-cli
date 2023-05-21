@@ -14,7 +14,7 @@ type Transaction struct {
 	ID     int
 	Asset  string
 	Date   time.Time
-	Type   string // Create type for txType
+	Type   string
 	Amount float64
 	Price  float64
 }

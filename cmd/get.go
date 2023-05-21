@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/AkifhanIlgaz/portfolio/db"
+	"github.com/rodaine/table"
 	"github.com/spf13/cobra"
 )
 
@@ -23,7 +24,9 @@ var getCmd = &cobra.Command{
 				fmt.Println(err)
 				continue
 			}
-			fmt.Println(tx)
+			tbl := table.New("ID", "Asset", "Type", "Amount", "Price", "Date")
+			tbl.AddRow(fmt.Sprintf("#%v", tx.ID), tx.Asset, tx.Type, tx.Amount, tx.Price, tx.Date.Format("2006-01-02 15:04"))
+			tbl.Print()
 		}
 	},
 }

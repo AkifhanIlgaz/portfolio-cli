@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/AkifhanIlgaz/portfolio/db"
+	"github.com/rodaine/table"
 	"github.com/spf13/cobra"
 )
 
@@ -30,7 +31,9 @@ var editCmd = &cobra.Command{
 			return
 		}
 		// print old transaction as row. So user can see old values
-		fmt.Println(oldTx)
+		tbl := table.New("ID", "Asset", "Type", "Amount", "Price", "Date")
+		tbl.AddRow(fmt.Sprintf("#%v", oldTx.ID), oldTx.Asset, oldTx.Type, oldTx.Amount, oldTx.Price, oldTx.Date.Format("2006-01-02 15:04"))
+		tbl.Print()
 
 		oldTx.Asset = changeAsset(oldTx.Asset)
 		oldTx.Date = changeDate(oldTx.Date)

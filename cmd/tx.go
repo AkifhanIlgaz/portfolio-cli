@@ -12,7 +12,6 @@ var txCmd = &cobra.Command{
 	Use:   "tx",
 	Short: "Show all transactions",
 	Run: func(cmd *cobra.Command, args []string) {
-		// TODO: Show in table
 
 		tbl := table.New("ID", "Asset", "Type", "Amount", "Price", "Date")
 

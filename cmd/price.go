@@ -7,6 +7,7 @@ import (
 	"fmt"
 
 	"github.com/AkifhanIlgaz/portfolio/price"
+	"github.com/rodaine/table"
 	"github.com/spf13/cobra"
 )
 
@@ -17,21 +18,22 @@ var priceCmd = &cobra.Command{
 
 	Run: func(cmd *cobra.Command, args []string) {
 		convert, _ := cmd.Flags().GetBool("try")
+		tbl := table.New("Asset", "Price")
 
 		for _, currency := range args {
 
 			if convert {
 				tryPrice := price.TRY()
 				currencyPrice := price.Crypto(currency).GetPrice()
-				fmt.Println(currency, currencyPrice*tryPrice)
+				tbl.AddRow(currency, fmt.Sprintf("%v₺", currencyPrice*tryPrice))
 			} else {
 				currencyPrice := price.Crypto(currency).GetPrice()
-				fmt.Println(currency, currencyPrice)
-
+				tbl.AddRow(currency, fmt.Sprintf("%v$", currencyPrice))
 			}
 
 		}
 
+		tbl.Print()
 	},
 }
 
