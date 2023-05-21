@@ -40,5 +40,5 @@ var priceCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(priceCmd)
 
-	priceCmd.Flags().Bool("try", false, "convert to TRY")
+	priceCmd.Flags().BoolP("try", "t", false, "convert to TRY")
 }

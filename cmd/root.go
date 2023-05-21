@@ -50,5 +50,5 @@ func Execute() {
 
 func init() {
 	rootCmd.Flags().BoolP("try", "t", false, "Convert to TRY")
-	// rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+
 }
