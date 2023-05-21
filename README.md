@@ -24,8 +24,22 @@ portfolio -h
 
 ![help](https://github.com/AkifhanIlgaz/portfolio-cli/blob/main/readme-imgs/portfolio-h.jpg)
 
-If you get "Command not found error", there is something wrong with your path. I have solved this issue by adding this line to "~/.bashrc".
+If you get `Command not found error`, there is something wrong with your path. I have solved this issue by adding this line to `~/.bashrc`.
 
 ```bash
 export PATH="~/go/bin:$PATH"
+```
+
+## How to use app
+
+Show the current price of cryptocurrencies in USD.
+
+```bash
+portfolio price <asset> <asset2>
+```
+
+### Example
+
+```bash
+portfolio price bitcoin ethereum
 ```
