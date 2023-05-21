@@ -21,7 +21,7 @@ var priceCmd = &cobra.Command{
 		tbl := table.New("Asset", "Price")
 
 		for _, currency := range args {
-
+			
 			if convert {
 				tryPrice := price.TRY()
 				currencyPrice := price.Crypto(currency).GetPrice()

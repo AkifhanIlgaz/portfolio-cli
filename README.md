@@ -32,12 +32,16 @@ export PATH="~/go/bin:$PATH"
 
 ## How to use app
 
-Show the current price of cryptocurrencies in USD.
+```bash
+# Show assets and total balance in USD. You can convert to TRY by `-t` flag
+portfolio
+```
 
 ```bash
-$ portfolio price <asset> <asset2>
-Example
-$ portfolio price bitcoin ethereum
+# Show the current price of cryptocurrencies in USD by default. You can convert to TRY by `-t` flag
+portfolio price <asset> <asset2>
+# Example
+portfolio price bitcoin ethereum
 ```
 
 ![help](https://github.com/AkifhanIlgaz/portfolio-cli/blob/main/readme-imgs/price-bitcoin-ethereum.jpg)
