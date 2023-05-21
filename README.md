@@ -38,7 +38,7 @@ export PATH="~/go/bin:$PATH"
 portfolio
 ```
 
-![portfolio](https://github.com/AkifhanIlgaz/portfolio-cli/blob/main/readme-imgs/portfolio1.jpg)
+![portfolio](https://github.com/AkifhanIlgaz/portfolio-cli/blob/main/readme-imgs/portfolio.jpg)
 
 ---
 
@@ -60,7 +60,7 @@ portfolio price bitcoin ethereum
 portfolio tx <asset> --type <txType>
 ```
 
-![tx](https://github.com/AkifhanIlgaz/portfolio-cli/blob/main/readme-imgs/portfolio.jpg)
+![tx](https://github.com/AkifhanIlgaz/portfolio-cli/blob/main/readme-imgs/tx.jpg)
 
 ---
 
