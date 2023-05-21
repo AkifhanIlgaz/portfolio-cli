@@ -12,12 +12,17 @@ var txCmd = &cobra.Command{
 	Use:   "tx",
 	Short: "Show all transactions",
 	Run: func(cmd *cobra.Command, args []string) {
+		txType := cmd.Flag("type").Value.String()
+		// Use type conversion
 
 		tbl := table.New("ID", "Asset", "Type", "Amount", "Price", "Date")
 
 		if len(args) == 0 {
 			for _, tx := range db.AllTransactions() {
-				tbl.AddRow(fmt.Sprintf("#%v", tx.ID), tx.Asset, tx.Type, tx.Amount, tx.Price, tx.Date.Format("2006-01-02 15:04"))
+				if tx.Type == txType {
+					tbl.AddRow(fmt.Sprintf("#%v", tx.ID), tx.Asset, tx.Type, tx.Amount, fmt.Sprintf("%v$", tx.Price), tx.Date.Format("2006-01-02 15:04"))
+				}
+
 			}
 			tbl.Print()
 			return
@@ -25,7 +30,10 @@ var txCmd = &cobra.Command{
 
 		for _, asset := range args {
 			for _, tx := range db.AllTransactionsOfAsset(asset) {
-				tbl.AddRow(fmt.Sprintf("#%v", tx.ID), tx.Asset, tx.Type, tx.Amount, tx.Price, tx.Date.Format("2006-01-02 15:04"))
+				if tx.Type == txType {
+					tbl.AddRow(fmt.Sprintf("#%v", tx.ID), tx.Asset, tx.Type, tx.Amount, tx.Price, tx.Date.Format("2006-01-02 15:04"))
+				}
+
 			}
 			tbl.Print()
 		}
@@ -35,4 +43,6 @@ var txCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(txCmd)
+
+	txCmd.Flags().String("type", "", "Specify the type of transaction")
 }
