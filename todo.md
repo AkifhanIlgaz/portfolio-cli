@@ -2,7 +2,6 @@
 
 Create price command to to get price from CLI
 Create getPriceBatch(?) function for multiple currencies
-Add flags to commands
 
 # DATABASE ACTIONS
 
