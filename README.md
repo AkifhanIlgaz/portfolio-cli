@@ -36,10 +36,8 @@ Show the current price of cryptocurrencies in USD.
 
 ```bash
 portfolio price <asset> <asset2>
-```
-
-### Example
-
-```bash
+Example
 portfolio price bitcoin ethereum
 ```
+
+![help](https://github.com/AkifhanIlgaz/portfolio-cli/blob/main/readme-imgs/price-bitcoin-ethereum.jpg)
