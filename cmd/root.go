@@ -16,7 +16,7 @@ var rootCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		convert, _ := cmd.Flags().GetBool("try")
 		tbl := table.New("Asset", "Balance", "Price", "Value")
-
+		fmt.Println(convert)
 		if convert {
 			tryPrice := price.TRY()
 			balance := 0.
@@ -28,7 +28,6 @@ var rootCmd = &cobra.Command{
 			}
 
 			fmt.Printf("Total Balance: %v₺\n", balance*tryPrice)
-			return
 		} else {
 			balance := 0.
 
