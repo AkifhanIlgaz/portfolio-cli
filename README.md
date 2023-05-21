@@ -35,21 +35,58 @@ export PATH="~/go/bin:$PATH"
 > Show assets and total balance in USD. You can convert to TRY by `-t` flag
 
 ```bash
-# Show assets and total balance in USD. You can convert to TRY by `-t` flag
 portfolio
 ```
+
+![portfolio](https://github.com/AkifhanIlgaz/portfolio-cli/blob/main/readme-imgs/portfolio1.jpg)
 
 ---
 
 > Show the current price of cryptocurrencies in USD by default. You can convert to TRY by `-t` flag
 
 ```bash
-# Show the current price of cryptocurrencies in USD by default. You can convert to TRY by `-t` flag
 portfolio price <asset> <asset2>
 # Example
 portfolio price bitcoin ethereum
 ```
 
-![help](https://github.com/AkifhanIlgaz/portfolio-cli/blob/main/readme-imgs/price-bitcoin-ethereum.jpg)
+![help](https://github.com/AkifhanIlgaz/portfolio-cli/blob/main/readme-imgs/price_bitcoin_ethereum.jpg)
 
 ---
+
+> Show all transactions
+
+```bash
+portfolio tx
+```
+
+![tx](https://github.com/AkifhanIlgaz/portfolio-cli/blob/main/readme-imgs/portfolio.jpg)
+
+> Add new transaction
+
+```bash
+portfolio tx add
+```
+
+![tx-add](https://github.com/AkifhanIlgaz/portfolio-cli/blob/main/readme-imgs/tx_add.jpg)
+
+> Edit a transaction
+
+```bash
+portfolio tx edit <txID>
+# If you press enter without typing anything, the value for that field doesn't change
+```
+
+![tx-edit](https://github.com/AkifhanIlgaz/portfolio-cli/blob/main/readme-imgs/tx_edit.jpg)
+
+> Delete a transaction
+
+```bash
+portfolio tx delete <txID>
+```
+
+> Delete an asset
+
+```bash
+portfolio delete <asset>
+```
