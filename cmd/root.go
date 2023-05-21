@@ -12,11 +12,10 @@ import (
 
 var rootCmd = &cobra.Command{
 	Use:   "portfolio",
-	Short: "Show total balance and assets",
+	Short: "CLI app to keep track of your crypto portfolio",
 	Run: func(cmd *cobra.Command, args []string) {
 		convert, _ := cmd.Flags().GetBool("try")
 		tbl := table.New("Asset", "Balance", "Price", "Value")
-		fmt.Println(convert)
 		if convert {
 			tryPrice := price.TRY()
 			balance := 0.
@@ -24,20 +23,20 @@ var rootCmd = &cobra.Command{
 			for _, asset := range db.AllAssets() {
 				assetPrice := price.Crypto(asset.Name).GetPrice()
 				balance += assetPrice * asset.Balance
-				tbl.AddRow(asset.Name, asset.Balance, fmt.Sprintf("%v₺", assetPrice*tryPrice), assetPrice*asset.Balance*tryPrice)
+				tbl.AddRow(asset.Name, asset.Balance, fmt.Sprintf("%.2f₺", assetPrice*tryPrice), fmt.Sprintf("%.2f₺", assetPrice*asset.Balance*tryPrice))
 			}
 
-			fmt.Printf("Total Balance: %v₺\n", balance*tryPrice)
+			fmt.Printf("Total Balance: %.2f₺\n", balance*tryPrice)
 		} else {
 			balance := 0.
 
 			for _, asset := range db.AllAssets() {
 				assetPrice := price.Crypto(asset.Name).GetPrice()
 				balance += assetPrice * asset.Balance
-				tbl.AddRow(asset.Name, asset.Balance, fmt.Sprintf("%v$", assetPrice), assetPrice*asset.Balance)
+				tbl.AddRow(asset.Name, asset.Balance, fmt.Sprintf("%.2f$", assetPrice), fmt.Sprintf("%.2f$", assetPrice*asset.Balance))
 			}
 
-			fmt.Printf("Total Balance: %v$\n", balance)
+			fmt.Printf("Total Balance: %.2f$\n", balance)
 		}
 
 		tbl.Print()
