@@ -6,6 +6,7 @@ import (
 
 	"github.com/AkifhanIlgaz/portfolio/db"
 	"github.com/AkifhanIlgaz/portfolio/price"
+	"github.com/rodaine/table"
 	"github.com/spf13/cobra"
 )
 
@@ -14,6 +15,8 @@ var rootCmd = &cobra.Command{
 	Short: "Show total balance and assets",
 	Run: func(cmd *cobra.Command, args []string) {
 		convert, _ := cmd.Flags().GetBool("try")
+		tbl := table.New("Asset", "Balance", "Price", "Value")
+
 		if convert {
 			tryPrice := price.TRY()
 			balance := 0.
@@ -21,10 +24,10 @@ var rootCmd = &cobra.Command{
 			for _, asset := range db.AllAssets() {
 				assetPrice := price.Crypto(asset.Name).GetPrice()
 				balance += assetPrice * asset.Balance
-				fmt.Println(asset, assetPrice*tryPrice)
+				tbl.AddRow(asset.Name, asset.Balance, fmt.Sprintf("%v₺", assetPrice*tryPrice), assetPrice*asset.Balance*tryPrice)
 			}
 
-			fmt.Println(balance * tryPrice)
+			fmt.Printf("Total Balance: %v₺\n", balance*tryPrice)
 			return
 		} else {
 			balance := 0.
@@ -32,11 +35,13 @@ var rootCmd = &cobra.Command{
 			for _, asset := range db.AllAssets() {
 				assetPrice := price.Crypto(asset.Name).GetPrice()
 				balance += assetPrice * asset.Balance
-				fmt.Println(asset, assetPrice)
+				tbl.AddRow(asset.Name, asset.Balance, fmt.Sprintf("%v$", assetPrice), assetPrice*asset.Balance)
 			}
 
-			fmt.Println(balance)
+			fmt.Printf("Total Balance: %v$\n", balance)
 		}
+
+		tbl.Print()
 
 	},
 }

@@ -81,6 +81,17 @@ func DeleteAsset(asset string) error {
 	})
 }
 
+func CreateAsset(initTransaction Transaction) error {
+	return db.Update(func(tx *bolt.Tx) error {
+		b := tx.Bucket(assetBucket)
+		b.Put([]byte(initTransaction.Asset), Serialize(Asset{
+			Name:    initTransaction.Asset,
+			Balance: initTransaction.Amount,
+		}))
+		return nil
+	})
+}
+
 func GetAsset(name string) (Asset, error) {
 	var asset Asset
 
@@ -99,11 +110,13 @@ func GetAsset(name string) (Asset, error) {
 
 func UpdateAsset(transaction Transaction) error {
 	asset, err := GetAsset(transaction.Asset)
-	if err != nil {
-		return err
+	if err != nil && transaction.Type != "sell" {
+		return CreateAsset(transaction)
 	}
 
 	err = db.Update(func(tx *bolt.Tx) error {
+		b := tx.Bucket(assetBucket)
+
 		switch transaction.Type {
 		case "buy", "airdrop":
 			asset.Balance += transaction.Amount
@@ -116,6 +129,8 @@ func UpdateAsset(transaction Transaction) error {
 				return DeleteAsset(asset.Name)
 			}
 		}
+
+		b.Put([]byte(asset.Name), Serialize(asset))
 
 		return nil
 	})
