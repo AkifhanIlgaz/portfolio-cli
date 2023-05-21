@@ -10,8 +10,8 @@ import (
 
 var txBucket = []byte("transactions")
 
-// Key will be sequential ID
 type Transaction struct {
+	ID     int
 	Asset  string
 	Date   time.Time
 	Type   string // Create type for txType
@@ -87,6 +87,7 @@ func CreateTransaction(newTx Transaction) (int, error) {
 		id64, _ := b.NextSequence()
 		id = int(id64)
 		key := itob(id)
+		newTx.ID = btoi(key)
 		return b.Put(key, Serialize(newTx))
 	})
 
@@ -139,4 +140,8 @@ func itob(v int) []byte {
 	b := make([]byte, 8)
 	binary.BigEndian.PutUint64(b, uint64(v))
 	return b
+}
+
+func btoi(b []byte) int {
+	return int(binary.BigEndian.Uint64(b))
 }
