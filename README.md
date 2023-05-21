@@ -57,7 +57,7 @@ portfolio price bitcoin ethereum
 > Show all transactions
 
 ```bash
-portfolio tx
+portfolio tx <asset> --type <txType>
 ```
 
 ![tx](https://github.com/AkifhanIlgaz/portfolio-cli/blob/main/readme-imgs/portfolio.jpg)
