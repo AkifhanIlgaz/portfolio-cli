@@ -62,6 +62,8 @@ portfolio tx <asset> --type <txType>
 
 ![tx](https://github.com/AkifhanIlgaz/portfolio-cli/blob/main/readme-imgs/portfolio.jpg)
 
+---
+
 > Add new transaction
 
 ```bash
@@ -69,6 +71,8 @@ portfolio tx add
 ```
 
 ![tx-add](https://github.com/AkifhanIlgaz/portfolio-cli/blob/main/readme-imgs/tx_add.jpg)
+
+---
 
 > Edit a transaction
 
@@ -79,11 +83,15 @@ portfolio tx edit <txID>
 
 ![tx-edit](https://github.com/AkifhanIlgaz/portfolio-cli/blob/main/readme-imgs/tx_edit.jpg)
 
+---
+
 > Delete a transaction
 
 ```bash
 portfolio tx delete <txID>
 ```
+
+---
 
 > Delete an asset
 
