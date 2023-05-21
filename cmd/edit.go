@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"log"
 	"strconv"
 	"strings"
 	"time"
@@ -77,7 +76,8 @@ func changeAmount(oldAmount float64) float64 {
 	} else {
 		amount, err := strconv.ParseFloat(amount, 64)
 		if err != nil {
-			log.Fatal("Unable to parse amount. Please enter valid amount")
+			fmt.Println("Please enter valid amount")
+			return changeAmount(oldAmount)
 		}
 		return amount
 	}
@@ -93,7 +93,8 @@ func changePrice(oldPrice float64) float64 {
 	} else {
 		price, err := strconv.ParseFloat(price, 64)
 		if err != nil {
-			log.Fatal("Unable to parse price. Please enter valid price")
+			fmt.Println("Please enter valid price")
+			return changePrice(oldPrice)
 		}
 		return price
 	}

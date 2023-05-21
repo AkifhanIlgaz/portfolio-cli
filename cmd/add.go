@@ -3,7 +3,6 @@ package cmd
 import (
 	"bufio"
 	"fmt"
-	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -46,7 +45,7 @@ func getAsset() string {
 	asset := scanner.Text()
 	if asset == "" {
 		fmt.Println("Please enter an asset")
-		os.Exit(1)
+		return getAsset()
 	}
 
 	asset = strings.TrimSpace(asset)
@@ -54,10 +53,6 @@ func getAsset() string {
 	asset = strings.ToLower(asset)
 
 	return asset
-}
-
-func toTitle(data string) string {
-	return strings.TrimSpace(strings.ToUpper(data[:1]) + strings.ToLower(data[1:]))
 }
 
 func getType() string {
@@ -70,8 +65,8 @@ func getType() string {
 	case "sell", "buy", "airdrop":
 		txType = t
 	default:
-		fmt.Println("Invalid transaction type")
-		os.Exit(1)
+		fmt.Println("Please enter valid transaction type")
+		return getType()
 	}
 
 	return txType
@@ -82,7 +77,8 @@ func getAmount() float64 {
 	scanner.Scan()
 	amount, err := strconv.ParseFloat(strings.TrimSpace(scanner.Text()), 64)
 	if err != nil {
-		log.Fatal("Unable to parse amount. Please enter valid amount")
+		fmt.Println("Please enter valid amount")
+		return getAmount()
 	}
 
 	return amount
@@ -93,7 +89,8 @@ func getPrice() float64 {
 	scanner.Scan()
 	amount, err := strconv.ParseFloat(strings.TrimSpace(scanner.Text()), 64)
 	if err != nil {
-		log.Fatal("Unable to parse amount. Please enter valid price")
+		fmt.Println("Please enter valid price")
+		getPrice()
 	}
 
 	return amount
