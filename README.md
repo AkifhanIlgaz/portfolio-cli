@@ -37,6 +37,8 @@ export PATH="~/go/bin:$PATH"
 portfolio
 ```
 
+---
+
 ```bash
 # Show the current price of cryptocurrencies in USD by default. You can convert to TRY by `-t` flag
 portfolio price <asset> <asset2>
@@ -45,3 +47,5 @@ portfolio price bitcoin ethereum
 ```
 
 ![help](https://github.com/AkifhanIlgaz/portfolio-cli/blob/main/readme-imgs/price-bitcoin-ethereum.jpg)
+
+---
