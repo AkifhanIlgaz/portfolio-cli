@@ -32,12 +32,16 @@ export PATH="~/go/bin:$PATH"
 
 ## How to use app
 
+> Show assets and total balance in USD. You can convert to TRY by `-t` flag
+
 ```bash
 # Show assets and total balance in USD. You can convert to TRY by `-t` flag
 portfolio
 ```
 
 ---
+
+> Show the current price of cryptocurrencies in USD by default. You can convert to TRY by `-t` flag
 
 ```bash
 # Show the current price of cryptocurrencies in USD by default. You can convert to TRY by `-t` flag
