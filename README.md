@@ -22,7 +22,7 @@ After this step, you should be able to use the app.Type this command to your ter
 portfolio -h
 ```
 
-![help](https://github.com/AkifhanIlgaz/portfolio-cli/readme-imgs/portfolio-h.jpg)
+![help](https://github.com/AkifhanIlgaz/portfolio-cli/blob/main/readme-imgs/portfolio-h.jpg)
 
 If you get "Command not found error", there is something wrong with your path. I have solved this issue by adding this line to "~/.bashrc".
 
