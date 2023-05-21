@@ -83,7 +83,7 @@ func createRequest(currency string) *http.Request {
 	q := url.Values{}
 	q.Set("ids", currency)
 	q.Set("vs_currencies", "usd")
-	q.Set("precision", "10")
+	q.Set("precision", "5")
 
 	req, _ := http.NewRequest("GET", baseURL, nil)
 	req.URL.RawQuery = q.Encode()

@@ -25,7 +25,15 @@ var deleteTxCmd = &cobra.Command{
 				return
 			}
 			fmt.Printf("Deleted tx #%v \n", id)
-			db.UpdateAsset(tx.Asset)
+
+			// Convert type when deleting an existing transaction
+			if tx.Type == "sell" {
+				tx.Type = "buy"
+			} else {
+				tx.Type = "sell"
+			}
+
+			db.UpdateAsset(tx)
 		}
 
 	},

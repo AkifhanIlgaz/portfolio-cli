@@ -40,7 +40,7 @@ var editCmd = &cobra.Command{
 		oldTx.Price = changePrice(oldTx.Price)
 
 		db.EditTransaction(id, oldTx)
-		db.UpdateAsset(oldTx.Asset)
+		db.UpdateAsset(oldTx)
 		fmt.Printf("Successfully updated transaction #%v\n", id)
 	},
 }

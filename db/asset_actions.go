@@ -1,14 +1,17 @@
 package db
 
-import "github.com/boltdb/bolt"
+import (
+	"fmt"
+
+	"github.com/boltdb/bolt"
+)
 
 var assetBucket = []byte("assets")
 
 // Name will be key in DB
 type Asset struct {
-	Name        string
-	Balance     float64
-	AvgBuyPrice float64
+	Name    string
+	Balance float64
 }
 
 func (a Asset) isFiat() bool {
@@ -78,37 +81,44 @@ func DeleteAsset(asset string) error {
 	})
 }
 
-func UpdateAsset(asset string) error {
+func GetAsset(name string) (Asset, error) {
+	var asset Asset
 
-	transactions := AllTransactionsOfAsset(asset)
-
-	if len(transactions) == 0 {
-		return DeleteAsset(asset)
-	}
-
-	var a = Asset{
-		Name: asset,
-	}
-
-	buyAmount, totalMoneyToBuy := 0., 0.
-
-	for _, transaction := range transactions {
-		if transaction.Type == "buy" {
-			buyAmount += transaction.Amount
-			totalMoneyToBuy += transaction.Price * transaction.Amount
-			a.Balance += transaction.Amount
-		} else if transaction.Type == "airdrop" {
-			a.Balance += transaction.Amount
-		} else {
-			a.Balance -= transaction.Amount
-		}
-	}
-
-	a.AvgBuyPrice = totalMoneyToBuy / buyAmount
-
-	return db.Update(func(tx *bolt.Tx) error {
+	err := db.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket(assetBucket)
-		return b.Put([]byte(asset), Serialize(a))
+		if a := b.Get([]byte(name)); a == nil {
+			return fmt.Errorf("asset cannot found: %v", name)
+		} else {
+			asset = Deserialize[Asset](a)
+			return nil
+		}
 	})
 
+	return asset, err
+}
+
+func UpdateAsset(transaction Transaction) error {
+	asset, err := GetAsset(transaction.Asset)
+	if err != nil {
+		return err
+	}
+
+	err = db.Update(func(tx *bolt.Tx) error {
+		switch transaction.Type {
+		case "buy", "airdrop":
+			asset.Balance += transaction.Amount
+		case "sell":
+			if asset.Balance < transaction.Amount {
+				return fmt.Errorf("not enough balance")
+			}
+			asset.Balance -= transaction.Amount
+			if asset.Balance <= 0 {
+				return DeleteAsset(asset.Name)
+			}
+		}
+
+		return nil
+	})
+
+	return err
 }

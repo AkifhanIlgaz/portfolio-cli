@@ -6,8 +6,6 @@ Add flags to commands
 
 # DATABASE ACTIONS
 
-Create bucket for old transactions. If the user deletes the asset or sells them all, delete asset's transactions from txBucket and move old oldTxBucket
-
 ## Transaction Actions
 
 ✔️ Create a transaction
@@ -45,9 +43,7 @@ Example => portfolio-cli balance -c try
 
 ## Asset Actions
 
-asset => Return all assets
-asset crypto => Return all cryptocurrencies
-asset delete <asset>, <asset1> => Delete given assets
+✔️ delete <asset>, <asset1> => Delete given assets
 
 # PRICE
 

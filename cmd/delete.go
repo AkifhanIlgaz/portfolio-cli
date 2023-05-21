@@ -1,3 +1,6 @@
+/*
+Copyright © 2023 NAME HERE <EMAIL ADDRESS>
+*/
 package cmd
 
 import (
@@ -5,9 +8,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var deleteAssetCmd = &cobra.Command{
+// deleteCmd represents the delete command
+var deleteCmd = &cobra.Command{
 	Use:   "delete",
-	Short: "Delete an asset",
+	Short: "Delete given assets",
+
 	Run: func(cmd *cobra.Command, args []string) {
 		for _, asset := range args {
 			db.DeleteAsset(asset)
@@ -16,5 +21,5 @@ var deleteAssetCmd = &cobra.Command{
 }
 
 func init() {
-	assetCmd.AddCommand(deleteAssetCmd)
+	rootCmd.AddCommand(deleteCmd)
 }

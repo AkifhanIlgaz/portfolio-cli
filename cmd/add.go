@@ -19,7 +19,7 @@ var createCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		tx := getTxInformationFromUser()
 		db.CreateTransaction(tx)
-		db.UpdateAsset(tx.Asset)
+		db.UpdateAsset(tx)
 	},
 }
 
